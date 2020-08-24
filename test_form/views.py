@@ -10,7 +10,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def home(request):
-    title = 'Welcome To Our Website'
+    title = 'COVID-19 Self-Assessment System'
     context = {
         "title": title,
     }
