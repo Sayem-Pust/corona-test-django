@@ -1,0 +1,43 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="title mb-5">{{title}}</h3>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Sex</th>
+                            <th>Temperature</th>
+                            <th>Symptom</th>
+                            <th>Additional</th>
+                            <th>Date</th>
+                        </tr>
+                            <tr>
+                                <td><a href="{% url 'profile_edit' id=profile.id %}">{{profile.name}}</a></td>
+                                <td>{{profile.age}}</td>
+                                <td>{{profile.gender}}</td>
+                                <td>{{profile.body_temperature}}</td>
+
+                                <td>{% for symptom in profile.symptom.all %} {{symptom }},{% endfor %}</td>
+                                <td>{% for additional in profile.additional.all %} {{ additional }}, {% endfor %}</td>
+                                <td>{{ profile.created_at }}</td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-12 pr-5 m-5">
+                <div class="box-element">
+                    <h3>Result snd Suggestion</h3>
+                    <p>{{ profile.result }}</p>
+                    <p>{{ profile.advice }}</p>
+                    <p>{{ profile.emergency_info }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

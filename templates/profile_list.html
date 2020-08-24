@@ -1,0 +1,103 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<html>
+<div class="container">
+    <div class="col-md-12">
+    <h1 class="title">{{title}}</h1>
+    <div class="m-3">
+    <form method="post" action="">
+        {% csrf_token %}
+        {{form|crispy}}
+        <input class="btn btn-primary" type="submit" value="Search" />
+    </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+        <tr>
+            <th>Sl No.</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Sex</th>
+            <th>Temperature</th>
+{#            <th>Symptom</th>#}
+{#            <th>Additional</th>#}
+            <th>Assessment Score</th>
+            <th>COVID-19 Result</th>
+            <th>Assessment Date</th>
+            <th>Action</th>
+        </tr>
+        {% for instance in queryset %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td><a href="{% url 'profile_edit' id=instance.id %}">{{instance.name}}</a></td>
+                <td>{{instance.age}}</td>
+                <td>{{instance.gender}}</td>
+                <td>{{instance.body_temperature}}</td>
+
+{#                <td>{% for symptom in instance.symptom.all %} {{symptom }},{% endfor %}</td>#}
+{#                <td>{% for additional in instance.additional.all %} {{ additional }}, {% endfor %}</td>#}
+                <td>{{ instance.score }}</td>
+                <td>{{ instance.result }}</td>
+                <td>{{ instance.created_at }}</td>
+
+                <td><a href="{% url 'profile_delete' id=instance.id %}">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+
+
+
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-12 ml-3">
+            {% if queryset.has_other_pages %}
+              <ul class="pagination">
+                {% if queryset.has_previous %}
+                    <li class="page-item">
+                        <a href="?page={{ queryset.previous_page_number }}" class="page-link">&laquo;</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">&laquo;</a>
+                    </li>
+                {% endif %}
+
+              {% for i in queryset.paginator.page_range %}
+                {% if queryset.number == i %}
+                  <li class="page-item active">
+                      <a class="page-link">{{ i }}</a>
+                  </li>
+
+                    {% else %}
+
+                    <li class="page-item">
+                        <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                    </li>
+
+                  {% endif %}
+              {% endfor %}
+                {% if queryset.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{ queryset.next_page_number }}" class="page-link">&raquo;</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">&raquo;</a>
+                    </li>
+                {% endif %}
+              </ul>
+            {% endif %}
+        </div>
+      </div>
+</div>
+</html>
+
+{% endblock %}
